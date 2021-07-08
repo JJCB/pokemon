@@ -5,12 +5,15 @@
       <PokemonList
         :apiUrl="apiUrl"
         @onClick="getDetailPokemon"
-        :favorites="favorites"
+        :favorites="favoritesList"
         :type="type"
       />
       <PokemonDetail
         v-if="showModal"
-        :data="pokemonSelected"
+        :data="{
+          ...pokemonSelected,
+          isFavorite: favoritesList.some((item) => item === pokemonSelected.name),
+        }"
         @closeDetail="closeDetail"
         @clickFavorite="clickFavorite"
       />
@@ -60,35 +63,34 @@ export default {
       apiUrl: process.env.VUE_APP_API_ROOT + "v2/pokemon/",
       showDetail: false,
       name: "",
-      favorites: [],
       type: "all",
     };
   },
   computed: {
-    ...mapState("pokemon", ["loading", "showModal", "pokemonSelected"]),
+    ...mapState("pokemon", [
+      "loading",
+      "showModal",
+      "pokemonSelected",
+      "favoritesList",
+    ]),
   },
   methods: {
     ...mapMutations("pokemon", ["SHOW_MODAL", "SET_POKEMON_SELECTED"]),
-    
+
     getDetailPokemon(name) {
       this.fetchDetail(name);
     },
-    
+
     clickFavorite(isFavorite, name) {
-      if (isFavorite) {
-        this.favorites.push(name);
-      } else {
-        const filter = this.favorites.filter((item) => item !== name);
-        this.favorites = filter;
-      }
+      this.$store.dispatch("pokemon/setFavorite", { isFavorite, name });
     },
 
     async fetchDetail(name) {
       this.$store.dispatch("pokemon/fetchDetailByName", name);
     },
     closeDetail() {
-      this.SET_POKEMON_SELECTED({})
-      this.SHOW_MODAL(false)
+      this.SET_POKEMON_SELECTED({});
+      this.SHOW_MODAL(false);
     },
   },
 };

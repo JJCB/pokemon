@@ -79,7 +79,7 @@ export default {
       this.$emit("closeDetail");
     },
     onClickFavorite() {
-      this.$emit("clickFavorite", !this.data.isFavorite, this.data.name);
+      this.$emit("clickFavorite", this.data.isFavorite, this.data.name);
     },
   },
 };

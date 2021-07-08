@@ -32,6 +32,7 @@ export default {
     ...mapState("pokemon", ["pokemonList", "apiUrl", "nextUrl"]),
     items() {
       if (this.type === "all") {
+        console.log("pokemonList", this.pokemonList)
         return this.pokemonList;
       } else {
         return this.favorites;

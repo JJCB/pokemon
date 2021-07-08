@@ -3,6 +3,7 @@ const SET_LOADING = 'SET_LOADING'
 const SHOW_MODAL = 'SHOW_MODAL'
 const ADD_POKEMON_DETAIL = 'ADD_POKEMON_DETAIL'
 const SET_POKEMON_SELECTED = 'SET_POKEMON_SELECTED'
+const SET_FAVORITES = 'SET_FAVORITES'
 
 export default {
   [UPDATE_POKEMON_LIST](state, pokemonList = []) {
@@ -25,5 +26,9 @@ export default {
 
   [SET_POKEMON_SELECTED](state, data) {
     state.pokemonSelected = data
+  },
+
+  [SET_FAVORITES](state, data) {
+    state.favoritesList = data
   }
 }

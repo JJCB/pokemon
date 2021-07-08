@@ -8,6 +8,7 @@ export default {
       console.log("ERROR", error);
     }
   },
+
   async fetchDetailByName({ commit, state }, name) {
     try {
       // const favorites = state.favoritesList
@@ -29,7 +30,6 @@ export default {
       }
       commit("SET_POKEMON_SELECTED", {
         ...current,
-        // isFavorite: favorites.some((item) => item === name),
       })
     } catch (error) {
       console.log("ERROR", error);
@@ -38,5 +38,16 @@ export default {
       commit("SHOW_MODAL", true)
 
     }
+  },
+
+  setFavorite({ commit, state }, parmas) {
+    let favorites = state.favoritesList
+    if (!parmas.isFavorite) {
+      favorites.push(parmas.name);
+    } else {
+      const filter = favorites.filter((item) => item !== parmas.name);
+      favorites = filter;
+    }
+    commit("SET_FAVORITES", favorites)
   },
 };
