@@ -47,11 +47,14 @@ export default {
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.04);
   margin-bottom: 40px;
 }
+.search__form {
+  width: 100%;
+}
 
 .search__input {
   border: none;
   outline: none;
-  width: calc(100% - 50px);
   font-size: 1rem;
+  width: 100%;
 }
 </style>

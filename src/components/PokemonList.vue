@@ -1,47 +1,62 @@
 <template>
   <div class="pokemon-list">
     <article
-      v-for="(pokemon, index) in pokemons"
-      :key="'poke' + index"
-      @click="onClick(pokemon.name)"
+      v-for="pokemon in pokemons"
+      :key="pokemon"
+      @click="onClick(pokemon)"
       class="pokemon-list__item"
     >
-      <span>{{ pokemon.name }}</span>
+      <span>{{ pokemon }}</span>
       <div class="pokemon-list__star">
         <inline-svg
           width="16"
           height="16"
           :src="require(`../assets/icons/star.svg`)"
-          fill="#ECA539"
+          :fill="isFavorite(pokemon)"
         ></inline-svg>
       </div>
     </article>
-    <div id="scroll-trigger" ref="infinitescrolltrigger">
-      <i class="fas fa-spinner fa-spin"></i>
-    </div>
+    <div id="scroll-trigger" ref="infinitescrolltrigger"></div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["apiUrl"],
+  props: ["apiUrl", "favorites", "type"],
   data: () => {
     return {
       pokemons: [],
       nextUrl: "",
       currentUrl: "",
+      totalPokemon: []
     };
   },
+  watch: {
+    type(next) {
+      if(next === "all") {
+        this.pokemons = this.totalPokemon
+      } else {
+        this.totalPokemon = this.pokemons
+        this.pokemons = this.favorites
+      }
+    },
+  },
   methods: {
+    isFavorite(name) {
+      return this.favorites.some((item) => item === name)
+        ? "#ECA539"
+        : "#BFBFBF";
+    },
     async fetchData() {
       try {
         const resp = await fetch(this.currentUrl);
         const data = await resp.json();
         this.nextUrl = data.next;
-        const temp = this.pokemons.concat(data.results);
+        const names = data.results.map((item) => item.name);
+        const temp = this.pokemons.concat(names);
         this.pokemons = temp;
       } catch (error) {
-        console.log("error");
+        console.log("ERROR");
       }
     },
     scrollTrigger() {
@@ -57,7 +72,9 @@ export default {
     },
     next() {
       this.currentUrl = this.nextUrl;
-      this.fetchData();
+      if (this.type === "all") {
+        this.fetchData();
+      }
     },
     onClick(name) {
       this.$emit("onClick", name);
@@ -90,7 +107,7 @@ export default {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 150px;
+  height: 70px;
   font-size: 2rem;
   color: #efefef;
 }

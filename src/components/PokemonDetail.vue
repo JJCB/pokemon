@@ -1,44 +1,53 @@
 <template>
   <div class="detail">
     <div class="detail__content">
-      <img
-        class="detail__close"
-        @click="closeDetail"
-        src="~@/assets/icons/close.svg"
-        alt="close"
-      />
-      <img
-        class="detail__bg"
-        alt="background"
-        src="~@/assets/images/bg-card.png"
-      />
-      <img class="detail__image" :src="data.image" alt="" />
-      <div class="detail__info">
-        <li class="detail__item">
-          Name: <span>{{ data.name }}</span>
-        </li>
-        <div class="detail__line"></div>
-        <li class="detail__item">
-          Weight: <span>{{ data.weight }}</span>
-        </li>
-        <div class="detail__line"></div>
-        <li class="detail__item">
-          Height: <span>{{ data.height }}</span>
-        </li>
-        <div class="detail__line"></div>
-        <li class="detail__item">
-          Types: <span>{{ data.types.join(",") }}</span>
-        </li>
-        <div class="detail__line"></div>
-        <div class="detail_btns">
-          <Button text="Share to my friends"></Button>
-          <inline-svg
-            width="26"
-            height="26"
-            :src="require(`../assets/icons/star.svg`)"
-            fill="#ECA539"
-          ></inline-svg>
+      <div v-if="Object.entries(data).length">
+        <img
+          class="detail__close"
+          @click="closeDetail"
+          src="~@/assets/icons/close.svg"
+          alt="close"
+        />
+        <img
+          class="detail__bg"
+          alt="background"
+          src="~@/assets/images/bg-card.png"
+        />
+        <img class="detail__image" :src="data.image" alt="" />
+        <div class="detail__info">
+          <li class="detail__item">
+            Name: <span>{{ data.name }}</span>
+          </li>
+          <div class="detail__line"></div>
+          <li class="detail__item">
+            Weight: <span>{{ data.weight }}</span>
+          </li>
+          <div class="detail__line"></div>
+          <li class="detail__item">
+            Height: <span>{{ data.height }}</span>
+          </li>
+          <div class="detail__line"></div>
+          <li class="detail__item">
+            Types: <span>{{ data.types.join(", ") }}</span>
+          </li>
+          <div class="detail__line"></div>
+          <div class="detail_btns">
+            <Button text="Share to my friends"></Button>
+            <div class="detail_star" @click="onClickFavorite()">
+              <inline-svg
+                width="26"
+                height="26"
+                :src="require(`../assets/icons/star.svg`)"
+                :fill="data.isFavorite ? '#ECA539' : '#BFBFBF'"
+              ></inline-svg>
+            </div>
+          </div>
         </div>
+      </div>
+      <div class="detail__failed" v-else>
+        <div class="detail__failed-title">Uh-oh!</div>
+        <span class="detail__failed-info">You look lost on your journey!</span>
+        <Button @onClick="closeDetail" text="Go back home"></Button>
       </div>
     </div>
   </div>
@@ -61,6 +70,9 @@ export default {
     closeDetail() {
       this.$emit("closeDetail");
     },
+    onClickFavorite() {
+      this.$emit("clickFavorite", !this.data.isFavorite, this.data.name);
+    },
   },
 };
 </script>
@@ -77,6 +89,7 @@ export default {
   width: calc(100% - 20px);
   height: calc(100vh - 20px);
   background: rgba(0, 0, 0, 0.6);
+  z-index: 2;
 }
 
 .detail__content {
@@ -124,6 +137,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 20px;
 }
 
 .detail__close {
@@ -131,5 +145,30 @@ export default {
   right: 10px;
   top: 10px;
   cursor: pointer;
+}
+
+.detail_star {
+  cursor: pointer;
+}
+
+.detail__failed {
+  padding: 20px 0;
+}
+.detail__failed-title {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 43px;
+  color: $dark-gray;
+  text-align: center;
+}
+
+.detail__failed-info {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  color: $gray;
+  margin: 15px 0 25px 0;
+  display: block;
 }
 </style>
