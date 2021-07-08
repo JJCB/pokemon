@@ -1,7 +1,7 @@
 <template>
   <div class="pokemon-list">
     <article
-      v-for="pokemon in pokemons"
+      v-for="pokemon in items"
       :key="pokemon"
       @click="onClick(pokemon)"
       class="pokemon-list__item"
@@ -28,16 +28,16 @@ export default {
       pokemons: [],
       nextUrl: "",
       currentUrl: "",
-      totalPokemon: []
+      totalPokemon: [],
     };
   },
-  watch: {
-    type(next) {
-      if(next === "all") {
-        this.pokemons = this.totalPokemon
+  watch: {},
+  computed: {
+    items() {
+      if (this.type === "all") {
+        return this.pokemons;
       } else {
-        this.totalPokemon = this.pokemons
-        this.pokemons = this.favorites
+        return this.favorites;
       }
     },
   },

@@ -23,9 +23,15 @@
       </div>
       <div class="pokemon-footer">
         <div class="pokemon-footer__box">
-          <Button @onClick="type = 'all'" iconLeft="vector" text="All"></Button>
           <Button
-            @onClick="type = 'avorite'"
+            :type="type === 'all' ? 'primary' : 'secondary'"
+            @onClick="type = 'all'"
+            iconLeft="vector"
+            text="All"
+          ></Button>
+          <Button
+            @onClick="type = 'favorite'"
+            :type="type === 'favorite' ? 'primary' : 'secondary'"
             iconLeft="star"
             text="Favorites"
           ></Button>
@@ -134,6 +140,11 @@ export default {
   justify-content: space-between;
   max-width: 550px;
   margin: 0 auto;
+  gap: 15px;
+  .button {
+    width: 50%;
+    max-width: 150px;
+  }
 }
 
 @keyframes loading {

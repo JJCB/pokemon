@@ -11,7 +11,7 @@
       Trainers in the Pokémon world.
     </h2>
     <div class="welcome__btn">
-      <Button></Button>
+      <Button @onClick="goPokemonList"></Button>
     </div>
   </div>
 </template>
@@ -24,6 +24,11 @@ export default {
     Button,
   },
   props: {},
+  methods: {
+    goPokemonList () {
+      this.$router.push('pokemon')
+    }
+  }
 };
 </script>
 

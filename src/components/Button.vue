@@ -1,7 +1,7 @@
 <template>
   <div
     class="button"
-    :class="{ button__disabled: isDisabled }"
+    :class="{ [type]: type }"
     @click="handleClick"
   >
     <div v-if="iconLeft" class="button__icon">
@@ -22,9 +22,9 @@ export default {
       type: Function,
       default: null,
     },
-    isDisabled: {
-      type: Boolean,
-      default: false,
+    type: {
+      type: String,
+      default: 'primary',
     },
     iconLeft: {
       type: String,
@@ -52,7 +52,6 @@ export default {
   justify-content: center;
   gap: 10px;
   border-radius: 60px;
-  background-color: $red;
   color: white;
   padding-left: 20px;
   padding-right: 20px;
@@ -66,8 +65,11 @@ export default {
   fill: white;
 }
 
-.button__disabled {
-  background-color: gray;
-  pointer-events: none;
+.primary {
+  background-color: $red;
+}
+
+.secondary {
+  background-color: $light-gray;
 }
 </style>
