@@ -2,6 +2,10 @@
 
 ## [Demo](https://zen-benz-062c24.netlify.app/)
 
+
+## [VUE-VUEX](https://github.com/JJCB/pokemon/tree/vuex)
+
+
 ## Tecnologías
 
 - vue
