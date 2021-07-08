@@ -21,21 +21,18 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
-  props: ["apiUrl", "favorites", "type"],
+  props: ["favorites", "type"],
   data: () => {
-    return {
-      pokemons: [],
-      nextUrl: "",
-      currentUrl: "",
-      totalPokemon: [],
-    };
+    return {};
   },
-  watch: {},
   computed: {
+    ...mapState("pokemon", ["pokemonList", "apiUrl", "nextUrl"]),
     items() {
       if (this.type === "all") {
-        return this.pokemons;
+        return this.pokemonList;
       } else {
         return this.favorites;
       }
@@ -47,18 +44,11 @@ export default {
         ? "#ECA539"
         : "#BFBFBF";
     },
-    async fetchData() {
-      try {
-        const resp = await fetch(this.currentUrl);
-        const data = await resp.json();
-        this.nextUrl = data.next;
-        const names = data.results.map((item) => item.name);
-        const temp = this.pokemons.concat(names);
-        this.pokemons = temp;
-      } catch (error) {
-        console.log("ERROR");
-      }
+
+    async fetchData(url) {
+      this.$store.dispatch("pokemon/fetchPokemonList", url);
     },
+
     scrollTrigger() {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -70,10 +60,10 @@ export default {
 
       observer.observe(this.$refs.infinitescrolltrigger);
     },
+
     next() {
-      this.currentUrl = this.nextUrl;
       if (this.type === "all") {
-        this.fetchData();
+        this.fetchData(this.nextUrl);
       }
     },
     onClick(name) {
@@ -81,8 +71,7 @@ export default {
     },
   },
   created() {
-    this.currentUrl = this.apiUrl;
-    this.fetchData();
+    this.fetchData(this.apiUrl);
   },
   mounted() {
     this.scrollTrigger();
