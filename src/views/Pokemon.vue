@@ -10,10 +10,8 @@
       />
       <PokemonDetail
         v-if="showModal"
-        :data="{
-          ...pokemonSelected,
-          isFavorite: favoritesList.some((item) => item === pokemonSelected.name),
-        }"
+        :data="pokemonSelected"
+        :isFavorite="favoritesList.some((item) => item === pokemonSelected.name)"
         @closeDetail="closeDetail"
         @clickFavorite="clickFavorite"
       />

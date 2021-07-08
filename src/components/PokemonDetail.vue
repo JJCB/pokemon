@@ -41,7 +41,7 @@
                 width="26"
                 height="26"
                 :src="require(`../assets/icons/star.svg`)"
-                :fill="data.isFavorite ? '#ECA539' : '#BFBFBF'"
+                :fill="isFavorite ? '#ECA539' : '#BFBFBF'"
               ></inline-svg>
             </div>
           </div>
@@ -65,7 +65,7 @@ export default {
   components: {
     Button,
   },
-  props: ["data"],
+  props: ["data", "isFavorite"],
   data: () => {
     return {
       show: false,
@@ -79,7 +79,7 @@ export default {
       this.$emit("closeDetail");
     },
     onClickFavorite() {
-      this.$emit("clickFavorite", this.data.isFavorite, this.data.name);
+      this.$emit("clickFavorite", this.isFavorite, this.data.name);
     },
   },
 };

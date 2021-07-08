@@ -11,7 +11,6 @@ export default {
 
   async fetchDetailByName({ commit, state }, name) {
     try {
-      // const favorites = state.favoritesList
       let current = state.pokemonDetailList[name]
       commit("SET_LOADING", true)
       if (!current) {
