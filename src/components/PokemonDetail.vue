@@ -28,7 +28,7 @@
           </li>
           <div class="detail__line"></div>
           <li class="detail__item">
-            Types: <span>{{ data.types.join(", ") }}</span>
+            Types: <span>{{ (data.types || []).join(", ") }}</span>
           </li>
           <div class="detail__line"></div>
           <div class="detail_btns">
@@ -57,6 +57,8 @@
 </template>
 
 <script>
+
+
 import Button from "@/components/Button.vue";
 
 export default {

@@ -9,7 +9,7 @@
         :type="type"
       />
       <PokemonDetail
-        v-if="showDetail"
+        v-if="showModal"
         :data="pokemonSelected"
         @closeDetail="closeDetail"
         @clickFavorite="clickFavorite"
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
 import PokemonList from "@/components/PokemonList.vue";
 import PokemonDetail from "@/components/PokemonDetail.vue";
 import PokemonSearch from "@/components/PokemonSearch.vue";
@@ -59,22 +60,21 @@ export default {
       apiUrl: process.env.VUE_APP_API_ROOT + "v2/pokemon/",
       showDetail: false,
       name: "",
-      pokemonSelected: {},
       favorites: [],
       type: "all",
-      loading: false,
     };
   },
+  computed: {
+    ...mapState("pokemon", ["loading", "showModal", "pokemonSelected"]),
+  },
   methods: {
+    ...mapMutations("pokemon", ["SHOW_MODAL", "SET_POKEMON_SELECTED"]),
+    
     getDetailPokemon(name) {
-      this.name = name;
-      this.fetchDetail();
+      this.fetchDetail(name);
     },
+    
     clickFavorite(isFavorite, name) {
-      this.pokemonSelected = {
-        ...this.pokemonSelected,
-        isFavorite: isFavorite,
-      };
       if (isFavorite) {
         this.favorites.push(name);
       } else {
@@ -83,32 +83,12 @@ export default {
       }
     },
 
-    async fetchDetail() {
-      try {
-        this.loading = true;
-        const resp = await fetch(this.apiUrl + this.name);
-        if (resp.status === 200) {
-          const data = await resp.json();
-          this.pokemonSelected = {
-            weight: data.weight,
-            height: data.height,
-            name: data.name,
-            types: data.types.map((item) => item.type.name),
-            image: data.sprites.other.dream_world.front_default,
-            isFavorite: this.favorites.some((item) => item === data.name),
-          };
-        }
-      } catch (error) {
-        console.log("ERROR", error);
-      } finally {
-        this.showDetail = true;
-        this.loading = false;
-      }
+    async fetchDetail(name) {
+      this.$store.dispatch("pokemon/fetchDetailByName", name);
     },
     closeDetail() {
-      this.pokemonUrl = "";
-      this.pokemonSelected = {};
-      this.showDetail = false;
+      this.SET_POKEMON_SELECTED({})
+      this.SHOW_MODAL(false)
     },
   },
 };
