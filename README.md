@@ -3,6 +3,7 @@
 ## Tecnologías
 
 - vue
+- vuex
 - scss
 - vue-router
 - vue-cli
