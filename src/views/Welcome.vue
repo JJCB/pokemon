@@ -26,7 +26,7 @@ export default {
   props: {},
   methods: {
     goPokemonList () {
-      this.$router.push('pokemon')
+      this.$router.push('pokemon-list')
     }
   }
 };
