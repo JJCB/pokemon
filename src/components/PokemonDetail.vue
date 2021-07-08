@@ -32,7 +32,10 @@
           </li>
           <div class="detail__line"></div>
           <div class="detail_btns">
-            <Button text="Share to my friends"></Button>
+            <Button
+              v-clipboard:copy="copy(data)"
+              text="Share to my friends"
+            ></Button>
             <div class="detail_star" @click="onClickFavorite()">
               <inline-svg
                 width="26"
@@ -67,6 +70,9 @@ export default {
     };
   },
   methods: {
+    copy(data) {
+      return `Name: ${data.name}, Weight: ${data.weight}, Height:${data.height}`;
+    },
     closeDetail() {
       this.$emit("closeDetail");
     },
